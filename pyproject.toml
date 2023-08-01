@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "djangostudy2"
+version = "0.1.0"
+description = ""
+authors = ["notStonks <kuzewich.a@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "3.2.13"
+pillow = "^9.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
