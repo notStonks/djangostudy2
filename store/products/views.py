@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 
-from .models import Product, ProductCategory
+from .models import Product, ProductCategory, BasketItem
 
 
 def index(request):
@@ -17,3 +17,18 @@ def products(request):
         'categories': ProductCategory.objects.all()
     }
     return render(request, 'products/products.html', context)
+
+
+def item_add(request, product_id):
+    product = Product.objects.get(id=product_id)
+    item = BasketItem.objects.get_or_create(user=request.user, product=product)[0]
+    item.quantity += 1
+    item.save()
+
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+def item_remove(request, basket_id):
+    item = BasketItem.objects.get(id=basket_id)
+    item.delete()
+
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
