@@ -6,7 +6,7 @@ from .forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from products.models import BasketItem
 
 def login(request):
-    if request.method == 'POST':
+    if request.POST:
         form = UserLoginForm(data=request.POST)
         if form.is_valid():
             username = request.POST['username']
@@ -22,7 +22,7 @@ def login(request):
 
 
 def registration(request):
-    if request.method == 'POST':
+    if request.POST:
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
             form.save()
