@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import auth, messages
 from django.urls import reverse
@@ -33,18 +34,30 @@ def registration(request):
     return render(request, 'users/registration.html', context)
 
 
+@login_required
 def profile(request):
-    if request.method == 'POST':
+    if request.POST:
         form = UserProfileForm(instance=request.user, data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('users:profile'))
     else:
         form = UserProfileForm(instance=request.user)
+
+    basket = BasketItem.objects.filter(user=request.user)
+    total_sum = sum(item.sum() for item in basket)
+    total_quantity = sum(item.quantity for item in basket)
+    # total_sum, total_quantity = 0, 0
+    # for item in basket:
+    #     total_sum += item.sum()
+    #     total_quantity += item.quantity
+
     context = {
         'title': 'Store - Профиль',
         'form': form,
-        'basket': BasketItem.objects.filter(user=request.user)
+        'basket': basket,
+        'total_sum': total_sum,
+        'total_quantity': total_quantity
     }
     return render(request, 'users/profile.html', context=context)
 
