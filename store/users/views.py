@@ -5,6 +5,7 @@ from django.urls import reverse
 from .forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from products.models import BasketItem
 
+
 def login(request):
     if request.POST:
         form = UserLoginForm(data=request.POST)
