@@ -1,32 +1,35 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from .models import Product, ProductCategory, BasketItem
-from django.core.paginator import Paginator
+from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
 
 
-def index(request):
-    context = {
-        'title': 'Store',
-    }
-    return render(request, 'products/index.html', context)
+class IndexView(TemplateView):
+    template_name = "products/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Store'
+        return context
 
 
-def products(request, category_id=None):
-    products = Product.objects.filter(category=category_id) if category_id else Product.objects.all()
-    per_page = 3
-    page_number = request.GET.get('page_number', 1)
-    if not isinstance(page_number, int):
-        if page_number.isdigit():
-            page_number = int(page_number)
-    paginator = Paginator(products, per_page)
-    products_paginator = paginator.page(page_number)
-    context = {
-        'title': 'Store - Каталог',
-        'products': products_paginator,
-        'categories': ProductCategory.objects.all(),
-        'category_id': category_id
-    }
-    return render(request, 'products/products.html', context)
+class ProductsListView(ListView):
+    model = Product
+    template_name = 'products/products.html'
+    context_object_name = 'products'
+    paginate_by = 3
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        category_id = self.kwargs.get('category_id')
+        return queryset.filter(category=category_id) if category_id else queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context['title'] = "Store - Каталог"
+        context['categories'] = ProductCategory.objects.all()
+        return context
 
 
 @login_required

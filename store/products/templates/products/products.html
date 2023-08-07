@@ -203,30 +203,31 @@
                 <!--                </div>-->
 
             </div>
-
+            {% if is_paginated %}
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item {% if not products.has_previous %} disabled {% endif %}">
+                    <li class="page-item {% if not page_obj.has_previous %} disabled {% endif %}">
                         <a class="page-link"
-                           href="{% if products.has_previous %} ?page_number={{ products.previous_page_number }} {% else %} # {% endif %}"
+                           href="{% if page_obj.has_previous %} ?page={{ page_obj.previous_page_number }} {% else %} # {% endif %}"
                            tabindex="-1" aria-disabled="true">Предыдущая</a>
                     </li>
-                    {% for page in products.paginator.page_range %}
-                    {% if products.number == count %}
+                    {% for page in paginator.page_range %}
+                    {% if products.number == page %}
                     <li class="page-item active">
                         {% elif page >= products.number|add:-2 and page <= products.number|add:2 %}
                     <li class="page-item">
                         {% endif %}
-                        <a class="page-link" href="?page_number={{ page }}">{{ page }}</a>
+                        <a class="page-link" href="?page={{ page }}">{{ page }}</a>
                     </li>
                     {% endfor %}
-                    <li class="page-item {% if not products.has_next %} disabled {% endif %}">
+                    <li class="page-item {% if not page_obj.has_next %} disabled {% endif %}">
                         <a class="page-link"
-                           href="{% if products.has_next %} ?page_number={{ products.next_page_number }} {% else %} # {% endif %}">
+                           href="{% if page_obj.has_next %} ?page={{ page_obj.next_page_number }} {% else %} # {% endif %}">
                             Следующая</a>
                     </li>
                 </ul>
             </nav>
+            {% endif %}
 
         </div>
 
