@@ -1,14 +1,14 @@
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 from django.core.mail import send_mail
 from django.db import models
-
-from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from django.utils.timezone import now
 
 
 class User(AbstractUser):
     image = models.ImageField(upload_to='users_images', null=True, blank=True)
+    email = models.EmailField(unique=True)
     is_verified_email = models.BooleanField(default=False)
 
 
@@ -32,7 +32,7 @@ class EmailVerification(models.Model):
         send_mail(
             subject=subject,
             message=message,
-            from_email="from@example.com",
+            from_email=settings.EMAIL_HOST_USER,
             recipient_list=[self.user.email],
             fail_silently=False,
         )
