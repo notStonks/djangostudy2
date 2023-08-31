@@ -37,6 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
+
     'products',
     'users',
 ]
@@ -65,6 +72,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'products.context_processors.basket'
+
             ],
         },
     },
@@ -138,7 +146,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/users/login/'
 LOGOUT_REDIRECT_URL = '/'
-
+LOGIN_REDIRECT_URL = '/'
 # emails
 
 EMAIL_HOST = 'smtp.yandex.ru'
@@ -146,3 +154,24 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = "djangostudy@yandex.ru"
 EMAIL_HOST_PASSWORD = "iiwrmqxmhlxjwivz"
 EMAIL_USE_SSL = True
+
+# OAuth
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1
+
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        'SCOPE': [
+            'user',
+            'user:email'
+        ],
+        "VERIFIED_EMAIL": True,
+    }
+}
+
+SOCIALACCOUNT_QUERY_EMAIL = True
