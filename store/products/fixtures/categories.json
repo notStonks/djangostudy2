@@ -14,5 +14,13 @@
       "name": "Обувь",
       "description": null
     }
+  },
+  {
+    "model": "products.productcategory",
+    "pk": 3,
+    "fields": {
+      "name": "Аксессуары",
+      "description": ""
+    }
   }
 ]
