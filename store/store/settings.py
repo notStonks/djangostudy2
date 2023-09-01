@@ -26,7 +26,7 @@ DEBUG = True
 
 DOMAIN_NAME = 'http://localhost:8000'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
