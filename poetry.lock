@@ -813,6 +813,20 @@ files = [
 six = ">=1.5"
 
 [[package]]
+name = "python-dotenv"
+version = "1.0.0"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+optional = false
+python-versions = ">=3.8"
+files = [
+    { file = "python-dotenv-1.0.0.tar.gz", hash = "sha256:a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba" },
+    { file = "python_dotenv-1.0.0-py3-none-any.whl", hash = "sha256:f5971a9226b701070a4bf2c38c89e5a3f0d64de8debda981d1db98583009122a" },
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
 name = "python3-openid"
 version = "3.2.0"
 description = "OpenID support for modern servers and consumers."
@@ -926,6 +940,32 @@ doc = ["sphinx"]
 test = ["pytest", "pytest-cov"]
 
 [[package]]
+name = "stripe"
+version = "6.3.0"
+description = "Python bindings for the Stripe API"
+optional = false
+python-versions = ">=3.6"
+files = [
+    { file = "stripe-6.3.0-py2.py3-none-any.whl", hash = "sha256:971639059f162310417901bef260402695cb831c5c5526ba970d11e0f0fff112" },
+    { file = "stripe-6.3.0.tar.gz", hash = "sha256:7d8b956f0592abc1d1b1cafb49e7ca3378bcf65ddf3ba8996d1a53e268222e49" },
+]
+
+[package.dependencies]
+requests = { version = ">=2.20", markers = "python_version >= \"3.0\"" }
+typing-extensions = { version = ">=4.0.0", markers = "python_version >= \"3.7\"" }
+
+[[package]]
+name = "typing-extensions"
+version = "4.7.1"
+description = "Backported and Experimental Type Hints for Python 3.7+"
+optional = false
+python-versions = ">=3.7"
+files = [
+    { file = "typing_extensions-4.7.1-py3-none-any.whl", hash = "sha256:440d5dd3af93b060174bf433bccd69b0babc3b15b1a8dca43789fd7f61514b36" },
+    { file = "typing_extensions-4.7.1.tar.gz", hash = "sha256:b75ddc264f0ba5615db7ba217daeb99701ad295353c45f9e95963337ceeeffb2" },
+]
+
+[[package]]
 name = "tzdata"
 version = "2023.3"
 description = "Provider of IANA time zone data"
@@ -978,4 +1018,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "bb6d06e5c5bfa4a712c67e5de30604a66d7498e85c8d78b84519c7acf51b3b54"
+content-hash = "67662cf014db7cf4320167279ba58a54b1b4be90fda4e5121cf557215897d3b9"
