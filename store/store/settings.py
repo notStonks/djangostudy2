@@ -31,7 +31,8 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = os.getenv('DEBUG')
+DEBUG = (os.getenv('DEBUG') == 'True')
 
 DOMAIN_NAME = os.getenv("DOMAIN_NAME")
 
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
     'debug_toolbar',
+    'django_extensions',
 
     'products',
     'orders',
@@ -102,7 +104,7 @@ INTERNAL_IPS = [
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": f"redis://{os.getenv('REDIS_HOST')}:{os.getenv('REDIS_PORT')}/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -179,7 +181,7 @@ LOGIN_REDIRECT_URL = '/'
 # emails
 
 EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT"))
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_SSL = True
@@ -206,9 +208,9 @@ SOCIALACCOUNT_PROVIDERS = {
 SOCIALACCOUNT_QUERY_EMAIL = True
 
 # Celery
-
-CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
-CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
+redis_url = f'redis://{os.getenv("REDIS_HOST")}:{os.getenv("REDIS_PORT")}'
+CELERY_BROKER_URL = redis_url
+CELERY_RESULT_BACKEND = redis_url
 
 # Stripe
 
