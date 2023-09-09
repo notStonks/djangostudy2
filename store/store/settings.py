@@ -212,7 +212,7 @@ SOCIALACCOUNT_PROVIDERS = {
 SOCIALACCOUNT_QUERY_EMAIL = True
 
 # Celery
-redis_url = f'redis://{os.getenv("REDIS_HOST")}:{os.getenv("REDIS_PORT")}'
+redis_url = f'redis://{os.getenv("REDIS_HOST")}:{os.getenv("REDIS_PORT")}/0'
 CELERY_BROKER_URL = redis_url
 CELERY_RESULT_BACKEND = redis_url
 

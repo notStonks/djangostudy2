@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  django:
+    container_name: django_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/store/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    links:
+      - redis
+      - celery
+    depends_on:
+      - redis
+      - celery
+
+  redis:
+    image: redis:7.0.5-alpine
+    hostname: redis
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: celery
+    command: -A store worker -l INFO
+    volumes:
+      - ./:/store/
+    links:
+      - redis
+    depends_on:
+      - redis
