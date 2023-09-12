@@ -6,9 +6,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
-    ports:
-      - 8000:8000
+    command: gunicorn store.wsgi:application --workers=4 --bind 0.0.0.0:8000
+    expose:
+      - 8000
     volumes:
       - ./:/store/
     extra_hosts:
@@ -16,15 +16,23 @@ services:
     links:
       - redis
       - celery
+      - nginx
     depends_on:
       - redis
       - celery
+      - nginx
+    networks:
+      internal:
 
   redis:
+    container_name: redis
     image: redis:7.0.5-alpine
     hostname: redis
+    networks:
+      internal:
 
   celery:
+    container_name: celery
     build:
       context: .
       dockerfile: Dockerfile
@@ -36,3 +44,39 @@ services:
       - redis
     depends_on:
       - redis
+    networks:
+      internal:
+
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./static:/var/www/static/
+      - ./media:/var/www/media/
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+    networks:
+      internal:
+
+  certbot:
+    container_name: certbot
+    image: certbot/certbot:latest
+    restart: unless-stopped
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      internal:
+
+networks:
+  internal:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
