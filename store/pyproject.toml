@@ -19,6 +19,7 @@ celery = { extras = ["redis"], version = "^5.3.4" }
 python-dotenv = "^1.0.0"
 stripe = "^6.3.0"
 django-extensions = "^3.2.3"
+djangorestframework = "^3.14.0"
 
 
 [build-system]
