@@ -19,6 +19,8 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.static import serve
 
+from rest_framework.authtoken import views
+
 static_urlpatterns = [
     re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
@@ -30,6 +32,9 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('accounts/', include('allauth.urls')),
     path('orders/', include('orders.urls')),
+    path('api/', include('api.urls')),
+    path('api-token-auth/', views.obtain_auth_token),
+
 ]
 
 if settings.DEBUG:
