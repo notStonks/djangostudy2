@@ -35,11 +35,7 @@ class ProductsListView(TitleMixin, ListView):
 
 @login_required
 def item_add(request, product_id):
-    product = Product.objects.get(id=product_id)
-    item = BasketItem.objects.get_or_create(user=request.user, product=product)[0]
-    item.quantity += 1
-    item.save()
-
+    BasketItem.create_or_update(product_id, request.user)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
